@@ -1,10 +1,20 @@
 <html>
 
 <head>
+    <script>
+        function validateForm() {
+            var x = document.forms["myForm"]["status_th"].value;
+            if (x == "" || x == null) {
+                alert("Status be filled out");
+                document.getElementById("status_th").focus
+                return false;
+            }
+        }
+    </script>
 </head>
 
 <body>
-    <form action = "add_status.php" method="get">
+    <form name="myForm" onsubmit="return validateForm()" action="add_status.php" method="get" require>
         <table border='1'>
             <!-- <tr>
                 <td>STATUS ID</td>
@@ -12,7 +22,7 @@
             </tr> -->
             <tr>
                 <td>STATUS THAI</td>
-                <td><input type="text" name="status_th"></td>
+                <td><input type="text" name="status_th" id="status_th"></td>
             </tr>
             <tr>
                 <td>STATUS ENGLISH</td>
