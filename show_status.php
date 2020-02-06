@@ -11,10 +11,28 @@
             }
         }
     </script>
+    <script>
+        function showHint(str) {
+            if (str.length == 0) {
+                document.getElementById("txtHint").innerHTML = "";
+                return;
+            } else {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("txtHint").innerHTML = this.responseText;
+                    }
+                };
+                xmlhttp.open("GET", "gethint.php?q=" + str, true);
+                xmlhttp.send();
+            }
+        }
+    </script>
 </head>
 
 <body>
     <form name="myForm" onsubmit="return validateForm()" action="add_status.php" method="get" require>
+        Suggestion: <span id="txtHint"> </span>
         <table border='1'>
             <!-- <tr>
                 <td>STATUS ID</td>
@@ -22,14 +40,17 @@
             </tr> -->
             <tr>
                 <td>STATUS THAI</td>
-                <td><input type="text" name="status_th" id="status_th"></td>
+                <td><input type="text" name="status_th" id="status_th" onkeyup="showHint(this.value)"></td>
             </tr>
             <tr>
                 <td>STATUS ENGLISH</td>
                 <td><input type="text" name="status_en"></td>
             </tr>
             <tr>
-                <td colspan="2"> <input type="submit" value="ADD"></td>
+                <td colspan="2"> 
+                <input type="submit" value="ADD">
+                <input type="button" value="Check Duplicate" onclick="showHint()">
+                </td>
             </tr>
         </table>
     </form>
