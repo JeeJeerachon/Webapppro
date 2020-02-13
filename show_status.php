@@ -69,12 +69,14 @@
                 // output data of each row
                 while($row = mysqli_fetch_assoc($result)) {
                     //echo "id: " . $row["STATUS_ID"]. " - Name: " . $row["STATUS_EN"]. " " . $row["STATUS_TH"]. "<br>";
-                    
+                    echo "<form action='delete_status.php' >";
                     echo "<tr>" ;
-                    echo  "<td>".$row["STATUS_ID"]."</td>";
+                    echo  "<td><input type='text' name='status_id' value=".$row["STATUS_ID"]."></td>";
                     echo  "<td>".$row["STATUS_TH"]."</td>";
                     echo  "<td>".$row["STATUS_EN"]."</td>";
+                    echo  "<td><input type='submit' value='Delete'></td>";
                     echo"</tr>";
+                    echo "</form>";
                 }
             } else {
                 echo "0 results";
