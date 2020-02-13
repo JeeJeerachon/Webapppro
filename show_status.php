@@ -2,6 +2,11 @@
 
 <head>
     <script>
+        function confirmDelete() {
+            return comfirm("Are you sure to Delete?");
+        }
+    </script>
+    <script>
         function validateForm() {
             var x = document.forms["myForm"]["status_th"].value;
             if (x == "" || x == null) {
@@ -51,18 +56,60 @@
                 <input type="submit" value="ADD">
                 <input type="button" value="Check Duplicate" onclick="showHint()">
                 </td>
+                
             </tr>
         </table>
     </form>
+
+    <table border="1">
+        <form>
+        <tr>
+            <td>ค้นหา: </td>
+            <td><input type ="text" name="txtSearch"></td>
+            <td>
+                <select name="Type">
+                    <option> STATUS ID </option>
+                    <option> STATUS TH </option>
+                    <option> STATUS ENG </option>
+                </select>
+            </td>
+            <td>
+                <input type="submit" value="Search">
+            </td>
+            
+        </tr>
+    </form>
+    </table>
+<from>
     <table border='1'>
         <tr>
-            <td>STATUS_ID</td>
-            <td>STATUS_TH</td>
-            <td>STATUS_ENG</td>
+            <td value ="1">STATUS_ID</td>
+            <td value ="2">STATUS_TH</td>
+            <td value=3>STATUS_ENG</td>
         </tr>
         <?php
             require("connect.php");
-            $sql = "SELECT STATUS_ID,STATUS_EN,STATUS_TH  FROM status";
+
+            $txtSearch ="";
+            $type = "";
+            
+            if(isset($_GET['txtSearch'])) $txtSearch = $_GET['txtSearch'];
+            if(isset($_GET['Type']))  $type = $_GET['Type'];
+            //$txtSearch = $_GET['txtSearch'];
+            //$type = $_GET['type'];
+            //$sql = "SELECT STATUS_ID,STATUS_EN,STATUS_TH  FROM status";
+            //$sql = "SELECT *FROM status WHERE STATUS_ID = " . $txtSearch;
+            $sql = "SELECT * FROM status";
+
+            if(type ==1){
+                $sql = "SELECT * FROM status WHERE STATUS_ID=".$txtSearch;
+            }else if ($type == 2){
+                    $sql = "SELECT * FROM status WHERE STATUS_TH LIKE= '%".$txtSearch . "%'";
+                }
+            }else if ($type == 3){
+                $sql = "SELECT * FROM status WHERE STATUS_EN= '".$txtSearch . "'";
+            }
+            
             $result = mysqli_query($conn, $sql);
 
             if (mysqli_num_rows($result) > 0) {
@@ -71,10 +118,10 @@
                     //echo "id: " . $row["STATUS_ID"]. " - Name: " . $row["STATUS_EN"]. " " . $row["STATUS_TH"]. "<br>";
                     echo "<form action='delete_status.php' >";
                     echo "<tr>" ;
-                    echo  "<td><input type='text' name='status_id' value=".$row["STATUS_ID"]."></td>";
+                    echo  "<td><input type='text' name='status_id' size = '5' value=".$row["STATUS_ID"]." readonly></td>";
                     echo  "<td>".$row["STATUS_TH"]."</td>";
                     echo  "<td>".$row["STATUS_EN"]."</td>";
-                    echo  "<td><input type='submit' value='Delete'></td>";
+                    echo  "<td><input type='submit' value='Delete' onClick='return confirmDelete()'></td>";
                     echo"</tr>";
                     echo "</form>";
                 }
